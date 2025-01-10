@@ -1,6 +1,7 @@
 <?php
 session_start();
-vendor/phpmailer/autoload.php; // Include PHPMailer library
+require 'vendor/autoload.php';
+ // Include PHPMailer library
 
 $servername = "localhost";
 $username = "root"; // Replace with your database username
@@ -45,7 +46,7 @@ if (isset($_POST['signup'])) {
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
-            $mail->setFrom('your-email@gmail.com', 'Computer Lab Complaint Portal');
+            $mail->setFrom('droptechnologyes@gmail.com', 'Computer Lab Complaint Portal');
             $mail->addAddress($email);
 
             $mail->isHTML(true);
