@@ -1,41 +1,58 @@
 <?php
 session_start();
-include('connection.php')
 
-// Connect to SQLite database
-try {
-    $pdo = new PDO('sqlite:complaints.db');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Could not connect to the database: " . $e->getMessage());
+// Database connection details
+$host = "localhost";
+$db_user = "root"; // Default XAMPP username
+$db_password = ""; // Default XAMPP password
+$dbname = "college"; // Change to your database name
+
+// Connect to the MySQL database
+$conn = new mysqli($host, $db_user, $db_password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Validate user input
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    $roll_no = trim($_POST['roll_no']);
     $password = trim($_POST['password']);
 
-    if (empty($username) || empty($password)) {
+    if (empty($roll_no) || empty($password)) {
         echo "<script>alert('Both fields are required!'); window.location.href='login.html';</script>";
         exit;
     }
 
     // Query to check user details
-    $query = "SELECT * FROM users WHERE username = :username";
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+    $query = "SELECT * FROM users WHERE roll_no = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $roll_no);
     $stmt->execute();
+    $result = $stmt->get_result();
 
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        if (password_verify($password, $user['password'])) {
+            // Start session and store user data
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
 
-    if ($user && password_verify($password, $user['password'])) {
-        // User authenticated, redirect to the homepage
-        $_SESSION['user'] = $user;
-        header('Location: home_page_complaint_site.html');
-        exit;
+            // Redirect to the homepage
+            header('Location: ../home_page_complaint_site.php');
+            exit;
+        } else {
+            echo "<script>alert('Invalid roll number or password!'); window.location.href='login.html';</script>";
+            exit;
+        }
     } else {
-        echo "<script>alert('Invalid username or password!'); window.location.href='login.html';</script>";
+        echo "<script>alert('Invalid roll number or password!'); window.location.href='login.html';</script>";
         exit;
     }
+
+    $stmt->close();
 }
+
+$conn->close();
 ?>
