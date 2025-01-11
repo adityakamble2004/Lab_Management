@@ -38,6 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Start session and store user data
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
+            $_SESSION['roll_no'] = $user['roll_no'];
+
 
             // Redirect to the homepage
             header('Location: ../home_page_complaint_site.php');

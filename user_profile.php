@@ -1,64 +1,54 @@
 <?php
 session_start();
+$conn = new mysqli("localhost", "root", "", "college");
 
-// Database connection details
-$host = "localhost";
-$db_user = "root"; // Default XAMPP username
-$db_password = ""; // Default XAMPP password
-$dbname = "college"; // Database name
-
-// Connect to the database
-$conn = new mysqli($host, $db_user, $db_password, $dbname);
-
-// Check connection
+// Check database connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Retrieve user details
-$user_id = $_SESSION['user_name']['user_id']; // Assuming user_id is stored in the session after login
-$query = "SELECT * FROM user_name WHERE user_id = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+// Check if roll_no is set in session
+if (isset($_SESSION['roll_no'])) {
+    $roll_no = $_SESSION['roll_no'];
 
-if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
-} else {
-    die("User not found.");
-}
+    // Prepare the SQL query
+    $sql = "SELECT name, email, class, subjects, photo FROM users WHERE roll_no = ?";
+    $stmt = $conn->prepare($sql);
 
-// Handle form submission to update user details
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name']);
-    $class = trim($_POST['class']);
-    $subjects = trim($_POST['subjects']);
-    $email = trim($_POST['email']);
-
-    // Handle profile image upload
-    $photo = $user['photo']; // Default to existing photo
-    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
-        $upload_dir = "uploads/";
-        $photo = $upload_dir . basename($_FILES['profile_image']['name']);
-        move_uploaded_file($_FILES['profile_image']['tmp_name'], $photo);
+    if (!$stmt) {
+        die("Statement preparation failed: " . $conn->error);
     }
 
-    // Update user details in the database
-    $update_query = "UPDATE users SET name = ?, class = ?, subjects = ?, email = ?, photo = ? WHERE user_id = ?";
-    $update_stmt = $conn->prepare($update_query);
-    $update_stmt->bind_param("sssssi", $name, $class, $subjects, $email, $photo, $user_id);
+    // Bind parameters and execute
+    $stmt->bind_param("s", $roll_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if ($update_stmt->execute()) {
-        echo "<script>alert('Profile updated successfully!'); window.location.href='profile.php';</script>";
+    // Fetch and store user details
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $name = $user['name'];
+        $email = $user['email'];
+        $class = $user['class'];
+        $subjects = $user['subjects'];
+        $photo = $user['photo'];
+
     } else {
-        echo "<script>alert('Error updating profile. Please try again.');</script>";
+        echo "No user found with the given roll number.";
     }
+
+    // Free result and close statement
+    $stmt->close();
+} else {
+    echo "Roll number not set in session.";
 }
 
-$stmt->close();
+
+// Close database connection
 $conn->close();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -124,16 +114,16 @@ $conn->close();
 
 <div class="profile-container">
     <!-- User Image -->
-    <img src="<?= htmlspecialchars($user['photo']) ?>" alt="Profile Image" class="profile-img" id="profileImage">
-
+    <img src="<?= htmlspecialchars($user['photo'] ?? 'default.png') ?>" alt="Profile Image" class="profile-img" id="profileImage">
+   
     <!-- Profile Details -->
     <div class="profile-details">
-        <form action="profile.php" method="POST" enctype="multipart/form-data">
+        <form action="updateuserinfo.php" method="POST" enctype="multipart/form-data">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" value="<?= htmlspecialchars($user['name']) ?>" required>
 
             <label for="roll_no">Roll No</label>
-            <input type="text" id="roll_no" name="roll_no" value="<?= htmlspecialchars($user['roll_no']) ?>" readonly>
+            <input type="text" id="roll_no" name="roll_no" value="<?= htmlspecialchars($roll_no) ?>" readonly>
 
             <label for="class">Class</label>
             <input type="text" id="class" name="class" value="<?= htmlspecialchars($user['class']) ?>" required>

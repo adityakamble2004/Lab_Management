@@ -47,9 +47,11 @@ session_start();
                     <p>Email: user@example.com</p>
                     <button onclick="window.location.href='user_profile.php';">View Profile</button>
                     <button onclick="window.location.href='\index.html'">Logout</button>
+                    
                 </div>
             </li>
         </ul>
     </header>
+    <h1><?php echo $_SESSION['roll_no'] ?></h1>
 </body>
 </html>
