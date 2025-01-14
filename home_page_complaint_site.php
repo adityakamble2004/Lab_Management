@@ -44,7 +44,7 @@ session_start();
                 <img src="componants\assets\user.png" alt="User Avatar" class="user-avatar" onclick="toggleUserPopup()"> <!-- Replace 'user.png' with the actual path to user avatar -->
                 <div class="user-popup" id="userPopup">
                     <p><strong>Welcome, <?php echo $_SESSION['user_name'] ?></strong></p>
-                    <p>Email: user@example.com</p>
+                    <p><?php echo $_SESSION['email']?></p>
                     <button onclick="window.location.href='user_profile.php';">View Profile</button>
                     <button onclick="window.location.href='\index.html'">Logout</button>
                     

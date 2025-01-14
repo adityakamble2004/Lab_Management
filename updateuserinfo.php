@@ -1,13 +1,7 @@
 <?php
 session_start();
 // Start session
-$conn = new mysqli("localhost", "root", "", "college");
-
-// Check database connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include('database/connection.php');
 
 
 // Check if the user is logged in

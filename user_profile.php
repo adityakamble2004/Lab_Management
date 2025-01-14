@@ -1,11 +1,7 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "college");
+include('database/connection.php');
 
-// Check database connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
 
 // Check if roll_no is set in session
 if (isset($_SESSION['roll_no'])) {

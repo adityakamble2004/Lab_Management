@@ -1,15 +1,6 @@
 <?php
-$host = "localhost";
-$username = "root"; // Default XAMPP username
-$password = "";     // Default XAMPP password
-$dbname = "college"; // Change to your database name
-
-$conn = new mysqli($host, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+   include('../database/connection.php');
+   echo realpath('../database/connection.php');
 
 
 // Handle form submission
