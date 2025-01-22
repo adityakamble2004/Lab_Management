@@ -63,9 +63,19 @@
             font-size: 14px;
             text-align: center;
         }
+        .logo{
+            align-items: center;
+            margin-left: 20%;
+            margin-right: 45%;
+
+        }
     </style>
 </head>
 <body>
+    <div class="maincon">
+        <div class="logo">
+    <img src="../componants/assets/student_logo.png" alt="student Logo" height="160px">
+    </div>
     <div class="login-container">
         <h2>Login</h2>
         <form action="login.php" method="POST" onsubmit="return validateForm()">
@@ -75,7 +85,7 @@
             <div class="error" id="error-message"></div>
         </form>
     </div>
-
+</div>
     <script>
         function validateForm() {
             const roll_no = document.getElementById("roll_no").value.trim();
