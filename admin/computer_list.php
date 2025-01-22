@@ -202,7 +202,7 @@ if ($result->num_rows > 0) {
             <th>Antivirus</th>
             <th>Warranty Expiry</th>
             <th>Last Checked</th>
-            <th>Location</th>
+            <th>Lab</th>
             <th>Assigned User</th>
             <th>Department</th>
             <th>Service History</th>
@@ -230,7 +230,7 @@ if ($result->num_rows > 0) {
                 <td>{$row['antivirus_details']}</td>
                 <td>{$row['warranty_expiry_date']}</td>
                 <td>{$row['last_checked_date']}</td>
-                <td>{$row['location']}</td>
+                <td>{$row['Lab']}</td>
                 <td>{$row['assigned_user']}</td>
                 <td>{$row['department']}</td>
                 <td>{$row['service_history']}</td>

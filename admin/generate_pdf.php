@@ -40,7 +40,7 @@ $pdf->Cell(18, 10, 'RAM', 1, 0, 'C');
 $pdf->Cell(25, 10, 'Storage', 1, 0, 'C');
 $pdf->Cell(25, 10, 'Graphics', 1, 0, 'C');
 $pdf->Cell(18, 10, 'Monitor', 1, 0, 'C');
-$pdf->Cell(25, 10, 'Location', 1, 1, 'C');
+$pdf->Cell(25, 10, 'Lab', 1, 1, 'C');
 
 // Set font for table content (smaller size)
 $pdf->SetFont('Arial', '', 8);
@@ -96,9 +96,9 @@ if ($result->num_rows > 0) {
         $pdf->SetXY(230, $currentY); 
         $pdf->Cell(18, 10, $row['monitor_details'], 1, 0, 'C');
         
-        // Eleventh column: Location
+        // Eleventh column: Lab
         $pdf->SetXY(248, $currentY); 
-        $pdf->Cell(25, 10, $row['location'], 1, 1, 'C');
+        $pdf->Cell(25, 10, $row['Lab'], 1, 1, 'C');
         
         // Check the Y position after the row, if it's greater than the initial Y, adjust for next row
         $newY = $pdf->GetY();

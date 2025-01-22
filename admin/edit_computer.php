@@ -48,23 +48,23 @@ if (isset($_GET['id'])) {
         $antivirus_details = !empty($_POST['antivirus_details']) ? $_POST['antivirus_details'] : NULL;
         $warranty_expiry_date = !empty($_POST['warranty_expiry_date']) ? $_POST['warranty_expiry_date'] : NULL;
         $last_checked_date = !empty($_POST['last_checked_date']) ? $_POST['last_checked_date'] : NULL;
-        $location = !empty($_POST['location']) ? $_POST['location'] : NULL;
+        $Lab = !empty($_POST['Lab']) ? $_POST['Lab'] : NULL;
         $assigned_user = !empty($_POST['assigned_user']) ? $_POST['assigned_user'] : NULL;
         $department = !empty($_POST['department']) ? $_POST['department'] : NULL;
         $service_history = !empty($_POST['service_history']) ? $_POST['service_history'] : NULL;
         $issue_description = !empty($_POST['issue_description']) ? $_POST['issue_description'] : NULL;
 
         // Prepare the update query
-        $update_query = "UPDATE computers SET asset_id = ?, computer_name = ?, computer_type = ?, operating_system = ?, processor_details = ?, ram_size = ?, storage_details = ?, graphics_card = ?, monitor_details = ?, peripherals = ?, ip_address = ?, mac_address = ?, network_name = ?, installed_applications = ?, antivirus_details = ?, warranty_expiry_date = ?, last_checked_date = ?, location = ?, assigned_user = ?, department = ?, service_history = ?, issue_description = ? WHERE id = ?";
+        $update_query = "UPDATE computers SET asset_id = ?, computer_name = ?, computer_type = ?, operating_system = ?, processor_details = ?, ram_size = ?, storage_details = ?, graphics_card = ?, monitor_details = ?, peripherals = ?, ip_address = ?, mac_address = ?, network_name = ?, installed_applications = ?, antivirus_details = ?, warranty_expiry_date = ?, last_checked_date = ?, Lab = ?, assigned_user = ?, department = ?, service_history = ?, issue_description = ? WHERE id = ?";
         
         if ($update_stmt = $conn->prepare($update_query)) {
             // Bind parameters, ensuring NULL values are handled
             $update_stmt->bind_param(
-                "sssssssssssssssssssssssi", 
+                "ssssssssssssssssssssssi", 
                 $asset_id, $computer_name, $computer_type, $operating_system, $processor_details, $ram_size, 
                 $storage_details, $graphics_card, $monitor_details, $peripherals, $ip_address, $mac_address, 
                 $network_name, $installed_applications, $antivirus_details, $warranty_expiry_date, $last_checked_date, 
-                $location, $assigned_user, $department, $service_history, $issue_description, $id
+                $Lab, $assigned_user, $department, $service_history, $issue_description, $id
             );
 
             // Execute and handle errors
@@ -267,8 +267,8 @@ select {
             <label for="last_checked_date">Last Checked:</label>
             <input type="date" name="last_checked_date" value="<?php echo $row['last_checked_date']; ?>"><br><br>
 
-            <label for="location">Location:</label>
-            <input type="text" name="location" value="<?php echo $row['location']; ?>"><br><br>
+            <label for="lab">lab:</label>
+            <input type="text" name="Lab" value="<?php echo $row['Lab']; ?>"><br><br>
 
             <label for="assigned_user">Assigned User:</label>
             <input type="text" name="assigned_user" value="<?php echo $row['assigned_user']; ?>"><br><br>
@@ -283,6 +283,7 @@ select {
             <textarea name="issue_description"><?php echo $row['issue_description']; ?></textarea><br><br>
 
             <button type="submit">Save Changes</button>
+            <a href="computer_list.php"> Computer List</a>
         </form>
     </div>
 </body>

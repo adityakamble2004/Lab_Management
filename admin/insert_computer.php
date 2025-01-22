@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $antivirus_details = $_POST['antivirus_details'] ?? null;
     $warranty_expiry_date = $_POST['warranty_expiry_date'] ?? null;
     $last_checked_date = $_POST['last_checked_date'] ?? null;
-    $location = $_POST['location'] ?? null;
+    $location = $_POST['lab'] ?? null;
     $assigned_user = $_POST['assigned_user'] ?? null;
     $department = $_POST['department'] ?? null;
     $service_history = $_POST['service_history'] ?? null;
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         processor_details, ram_size, storage_details, graphics_card, 
         monitor_details, peripherals, ip_address, mac_address, 
         network_name, installed_applications, antivirus_details, 
-        warranty_expiry_date, last_checked_date, location, 
+        warranty_expiry_date, last_checked_date, lab, 
         assigned_user, department, service_history, issue_description
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $antivirus_details,
         $warranty_expiry_date,
         $last_checked_date,
-        $location,
+        $lab,
         $assigned_user,
         $department,
         $service_history,
