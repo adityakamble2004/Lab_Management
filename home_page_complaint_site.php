@@ -1,6 +1,24 @@
 <?Php
 session_start();
+// Define the path to the requested image and fallback image
+function imgload(){
+
+    $imagePath = "";
+    $fallbackImagePath = "componants\assets\user.png";
+    
+    // Check if the requested image exists
+    if (file_exists($imagePath)) {
+        $imageToLoad = $imagePath; // Load the requested image
+    } else {
+        $imageToLoad = $fallbackImagePath; // Load the fallback image
+    }
+    
+    // Serve the image
+    header("Content-Type: image/jpeg"); // Set the content type (adjust based on image type)
+    readfile($imageToLoad); // Output the image
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +48,8 @@ session_start();
     <header class="header">
         <!-- Logo Section -->
         <div class="logo">
-            <img src="componants/assets/logo.png" alt="Logo"> <!-- Replace 'logo.png' with the actual logo file -->
+            <img src="componants/assets/student_logo.png" alt="student Logo" height="160px">
+            
             <span>Complaint Portal</span>
         </div>
 
@@ -39,7 +58,7 @@ session_start();
             <li><a href="home.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="services.html">Services</a></li>
-            <li><a href="labs.html">Labs</a></li>
+            <li><a href="labs/labs_overview.php">Labs</a></li>
             <li class="user-info">
                 <img src="componants\assets\user.png" alt="User Avatar" class="user-avatar" onclick="toggleUserPopup()"> <!-- Replace 'user.png' with the actual path to user avatar -->
                 <div class="user-popup" id="userPopup">
