@@ -1,13 +1,5 @@
 <?php
 session_start();
-
-// Check if admin is logged in
-if (!isset($_SESSION['admin_id']) || $_SESSION['role'] !== 'Admin') {
-    echo "<script>alert('Access denied! Please log in as an admin.'); window.location.href='admin_login.html';</script>";
-    exit;
-}
-
-// Include database connection if needed
 include('../database/connection.php');
 ?>
 
@@ -46,7 +38,7 @@ include('../database/connection.php');
             padding: 20px;
         }
         h1 {
-            color: #333;
+            color: rgb(32, 103, 179);;
         }
         button {
             padding: 10px 20px;
@@ -63,7 +55,7 @@ include('../database/connection.php');
 </head>
 <body>
     <header>
-        <h1>Welcome, <?php echo htmlspecialchars($_SESSION['admin_name']); ?>!</h1>
+        <h1>Welcome, <?php echo htmlspecialchars($_SESSION['admin_username']); ?>!</h1>
     </header>
 
     <nav>
@@ -78,6 +70,18 @@ include('../database/connection.php');
         <h3>Quick Actions:</h3>
         <button onclick="location.href='add_computer_form.php'">Add New Computer</button>
         <button onclick="location.href='add_teacher_form.php'">Add New Teacher</button>
+    </div>
+
+    <div class="allwork">
+        <ul>
+            <li><a href="insert_computer.php">insert computers </a></li>
+            <li><a href="computer_list.php">computer list</a></li>
+            <li><a href="update_complaint.php">Upate complain</a></li>
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+            <li><a href=""></a></li>
+        </ul>
     </div>
 </body>
 </html>

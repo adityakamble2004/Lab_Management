@@ -3,64 +3,55 @@ session_start();
 include('../database/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Input validation
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
+    $phone_number = trim($_POST['phone_number']);
+    $lab_in_charge = trim($_POST['lab_in_charge']);
+    $username = trim($_POST['username']);
     $password = trim($_POST['password']);
-    $confirm_password = trim($_POST['confirm_password']);
+    $role = 'Admin'; // Set role as Admin
 
-    // Validate inputs
-    if (empty($name) || empty($email) || empty($password) || empty($confirm_password)) {
-        echo "<script>alert('All fields are required!'); window.location.href='admin_signup.php';</script>";
-        exit;
+    $errors = [];
+
+    // Check for empty fields
+    if (empty($name)) $errors[] = "Name is required.";
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "A valid email is required.";
+    if (empty($username)) $errors[] = "Username is required.";
+    if (empty($password) || strlen($password) < 6) $errors[] = "Password must be at least 6 characters long.";
+
+    if (empty($errors)) {
+        $password_hash = password_hash($password, PASSWORD_BCRYPT); // Hash password
+
+        // Check if the username or email already exists
+        $check_sql = "SELECT * FROM teachers WHERE username = ? OR email = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("ss", $username, $email);
+        $check_stmt->execute();
+        $check_result = $check_stmt->get_result();
+
+        if ($check_result->num_rows > 0) {
+            $errors[] = "Username or email is already in use.";
+        } else {
+            // Insert admin details into the database
+            $sql = "INSERT INTO teachers (name, email, phone_number, lab_in_charge, username, password_hash, role) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssssss", $name, $email, $phone_number, $lab_in_charge, $username, $password_hash, $role);
+
+            if ($stmt->execute()) {
+                echo "<script>alert('Admin registered successfully!'); window.location.href='admin_login.php';</script>";
+                exit;
+            } else {
+                $errors[] = "Database error: Unable to register.";
+            }
+            $stmt->close();
+        }
+        $check_stmt->close();
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "<script>alert('Invalid email format!'); window.location.href='admin_signup.php';</script>";
-        exit;
-    }
-
-    if ($password !== $confirm_password) {
-        echo "<script>alert('Passwords do not match!'); window.location.href='admin_signup.php';</script>";
-        exit;
-    }
-
-    // Hash the password
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Check if the email is already registered
-    $query = "SELECT * FROM teachers WHERE email = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        echo "<script>alert('This email is already registered!'); window.location.href='admin_signup.php';</script>";
-        exit;
-    }
-
-    // Insert admin data into the table
-    $role = 'Admin';
-    $insert_query = "INSERT INTO teachers (name, email, password, role) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($insert_query);
-
-    if (!$stmt) {
-        echo "<script>alert('Error preparing query: " . $conn->error . "'); window.location.href='admin_signup.php';</script>";
-        exit;
-    }
-
-    $stmt->bind_param("ssss", $name, $email, $hashed_password, $role);
-
-    if ($stmt->execute()) {
-        echo "<script>alert('Signup successful! You can now log in.'); window.location.href='admin_login.html';</script>";
-    } else {
-        echo "<script>alert('Error: Could not register. Please try again later.'); window.location.href='admin_signup.php';</script>";
-    }
-
-    $stmt->close();
+    $conn->close();
 }
-
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -72,47 +63,63 @@ $conn->close();
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
+        .form-container {
             background: #fff;
-            border: 1px solid #ccc;
+            padding: 20px;
             border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
         }
-        h1 {
-            text-align: center;
-            color: #333;
+        .form-container h2 {
+            margin-bottom: 20px;
         }
-        input[type="text"], input[type="email"], input[type="password"], button {
+        .form-container input, .form-container button {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 4px;
         }
-        button {
-            background-color: #007bff;
-            color: #fff;
+        .form-container button {
+            background: #007bff;
+            color: white;
+            border: none;
             cursor: pointer;
         }
-        button:hover {
-            background-color: #0056b3;
+        .form-container button:hover {
+            background: #0056b3;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Admin Signup</h1>
-        <form action="admin_signup.php" method="POST">
-            <input type="text" name="name" placeholder="Full Name" required>
-            <input type="email" name="email" placeholder="Email Address" required>
+    <div class="form-container">
+        <h2>Admin Signup</h2>
+        <?php if (!empty($errors)): ?>
+            <div class="error">
+                <?php foreach ($errors as $error): ?>
+                    <p><?php echo htmlspecialchars($error); ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <form method="POST" action="">
+            <input type="text" name="name" placeholder="Name" value="<?php echo htmlspecialchars($name ?? ''); ?>" required>
+            <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
+            <input type="text" name="phone_number" placeholder="Phone Number" value="<?php echo htmlspecialchars($phone_number ?? ''); ?>">
+            <input type="text" name="lab_in_charge" placeholder="Lab In-Charge" value="<?php echo htmlspecialchars($lab_in_charge ?? ''); ?>">
+            <input type="text" name="username" placeholder="Username" value="<?php echo htmlspecialchars($username ?? ''); ?>" required>
             <input type="password" name="password" placeholder="Password" required>
-            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
             <button type="submit">Sign Up</button>
         </form>
     </div>

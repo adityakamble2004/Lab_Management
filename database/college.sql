@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2025 at 04:21 PM
+-- Generation Time: Jan 27, 2025 at 03:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -48,12 +48,48 @@ CREATE TABLE `admin_computers` (
 
 CREATE TABLE `complaints` (
   `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `computer_id` int(11) DEFAULT NULL,
-  `issue_description` text DEFAULT NULL,
-  `status` enum('Pending','Resolved') DEFAULT 'Pending',
+  `roll_no` int(11) NOT NULL,
+  `asset_id` varchar(11) NOT NULL,
+  `issue_description` text NOT NULL,
+  `status` enum('Pending','Resolved','In Progress') DEFAULT 'Pending',
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT NULL ON UPDATE current_timestamp()
+  `resolved_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `selected_problems` text NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `computer_id` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `complaints`
+--
+
+INSERT INTO `complaints` (`id`, `roll_no`, `asset_id`, `issue_description`, `status`, `created_at`, `resolved_at`, `updated_at`, `selected_problems`, `email`, `computer_id`) VALUES
+(1, 1, '101', 'System is overheating frequently.', 'Resolved', '2025-01-24 23:54:09', '2025-01-26 00:01:08', '2025-01-26 00:01:08', '', NULL, NULL),
+(38, 24728, 'C34567', '', 'Resolved', '2025-01-25 23:30:40', '2025-01-26 00:01:06', '2025-01-26 00:01:06', 'Internet Connectivity Issues, Driver Issues, Operating System Errors', 'ak8806657127@gmail.com', NULL),
+(39, 24728, 'C34567', '', 'Resolved', '2025-01-25 23:31:42', '2025-01-26 00:01:04', '2025-01-26 00:01:04', 'Slow Performance, Software Crashes, Blue Screen of Death (BSOD)', 'ak8806657127@gmail.com', NULL),
+(40, 24728, 'C34567', '', 'Resolved', '2025-01-25 23:33:18', '2025-01-26 00:00:59', '2025-01-26 00:00:59', 'Slow Performance, Software Crashes, Internet Connectivity Issues', 'ak8806657127@gmail.com', NULL),
+(41, 24728, 'D45678', '', 'Resolved', '2025-01-25 23:33:34', '2025-01-26 00:00:57', '2025-01-26 00:00:57', 'Blue Screen of Death (BSOD), Internet Connectivity Issues, Virus or Malware Infections', 'ak8806657127@gmail.com', NULL),
+(42, 24728, 'D45678', '', 'Resolved', '2025-01-25 23:33:54', '2025-01-26 00:00:55', '2025-01-26 00:00:55', 'Blue Screen of Death (BSOD), Internet Connectivity Issues, Virus or Malware Infections', 'ak8806657127@gmail.com', NULL),
+(43, 24728, 'F67890', '54329486', 'Resolved', '2025-01-25 23:46:46', '2025-01-26 00:00:51', '2025-01-26 00:00:51', 'Slow Performance, Software Crashes, Blue Screen of Death (BSOD), Internet Connectivity Issues', 'ak8806657127@gmail.com', NULL),
+(44, 24728, 'F67890', '54329486', 'Resolved', '2025-01-25 23:52:20', '2025-01-26 00:00:50', '2025-01-26 00:00:50', 'Slow Performance, Software Crashes, Blue Screen of Death (BSOD), Internet Connectivity Issues', 'ak8806657127@gmail.com', NULL),
+(45, 24728, 'D45678', '', 'Resolved', '2025-01-25 23:53:18', '2025-01-26 00:00:47', '2025-01-26 00:00:47', 'Slow Performance, Software Crashes', 'ak8806657127@gmail.com', NULL),
+(46, 24728, 'D45678', '', 'Resolved', '2025-01-25 23:54:11', '2025-01-26 00:00:45', '2025-01-26 00:00:45', 'Blue Screen of Death (BSOD), Internet Connectivity Issues, Virus or Malware Infections', 'ak8806657127@gmail.com', NULL),
+(47, 24728, 'D45678', '', 'Resolved', '2025-01-25 23:56:23', '2025-01-26 00:00:43', '2025-01-26 00:00:43', 'Blue Screen of Death (BSOD), Internet Connectivity Issues, Virus or Malware Infections', 'ak8806657127@gmail.com', NULL),
+(48, 24728, 'G78901', '', 'Resolved', '2025-01-25 23:58:59', '2025-01-26 00:00:41', '2025-01-26 00:00:41', 'Slow Performance, Software Crashes, Internet Connectivity Issues', 'ak8806657127@gmail.com', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `complaint_history`
+--
+
+CREATE TABLE `complaint_history` (
+  `id` int(11) NOT NULL,
+  `complaint_id` int(11) NOT NULL,
+  `updated_status` enum('Pending','Resolved','In Progress') NOT NULL,
+  `updated_at` datetime DEFAULT current_timestamp(),
+  `admin_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -81,30 +117,32 @@ CREATE TABLE `computers` (
   `antivirus_details` varchar(100) DEFAULT NULL,
   `warranty_expiry_date` date DEFAULT NULL,
   `last_checked_date` date DEFAULT NULL,
-  `location` varchar(100) DEFAULT NULL,
   `assigned_user` varchar(100) DEFAULT NULL,
   `department` varchar(100) DEFAULT NULL,
   `service_history` text DEFAULT NULL,
   `issue_description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `Lab` varchar(255) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'Working'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `computers`
 --
 
-INSERT INTO `computers` (`id`, `asset_id`, `computer_name`, `computer_type`, `operating_system`, `processor_details`, `ram_size`, `storage_details`, `graphics_card`, `monitor_details`, `peripherals`, `ip_address`, `mac_address`, `network_name`, `installed_applications`, `antivirus_details`, `warranty_expiry_date`, `last_checked_date`, `location`, `assigned_user`, `department`, `service_history`, `issue_description`, `created_at`, `updated_at`) VALUES
-(2, 'A12345', 'PC-001', 'Desktop', 'Windows 10', 'Intel i5-10400', '8GB', '512GB SSD', 'Intel UHD 630', 'Dell 24-inch', 'Keyboard, Mouse', '192.168.1.101', '00:14:22:58:9F:56', 'Corporate Network', 'Microsoft Office, Chrome', 'McAfee', '2026-12-15', '2025-01-10', 'New York Office', 'John Doe', 'HR', 'Replaced Hard Drive in 2023', 'No major issues', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(3, 'B23456', 'PC-002', 'Laptop', 'Windows 11', 'AMD Ryzen 5', '16GB', '1TB HDD', 'NVIDIA GTX 1650', 'HP 15-inch', 'Docking Station', '192.168.1.102', '00:14:22:58:9F:57', 'Corporate Network', 'Adobe Suite, Visual Studio', 'Kaspersky', '2025-07-20', '2025-01-10', 'London Office', 'Jane Smith', 'Engineering', 'Replaced Battery in 2024', 'Overheats occasionally', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(4, 'C34567', 'PC-003', 'Desktop', 'Windows 10', 'Intel i7-10700K', '32GB', '1TB SSD', 'NVIDIA RTX 3070', 'LG 27-inch', 'None', '192.168.1.103', '00:14:22:58:9F:58', 'Corporate Network', 'Visual Studio Code, Docker', 'Norton', '2026-05-10', '2025-01-10', 'San Francisco Office', 'Alice Johnson', 'Development', 'Replaced RAM in 2023', 'Minor graphics glitches', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(5, 'D45678', 'PC-004', 'Desktop', 'Windows 7', 'Intel i3-9100F', '4GB', '256GB SSD', 'Intel UHD 610', 'Samsung 24-inch', 'Printer', '192.168.1.104', '00:14:22:58:9F:59', 'Guest Network', 'Google Chrome', 'AVG', '2025-03-25', '2025-01-10', 'Sydney Office', 'Tom Harris', 'Marketing', 'No history', 'Runs slow during large file transfers', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(6, 'E56789', 'PC-005', 'Laptop', 'macOS Ventura', 'Apple M1', '16GB', '512GB SSD', 'Apple Integrated', 'Apple 13-inch Retina', 'None', '192.168.1.105', '00:14:22:58:9F:60', 'Corporate Network', 'Xcode, Slack', 'Bitdefender', '2026-10-30', '2025-01-10', 'Tokyo Office', 'Emma Lee', 'Design', 'Replaced Keyboard in 2024', 'Occasional keyboard lag', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(7, 'F67890', 'PC-006', 'Desktop', 'Windows 10', 'AMD Ryzen 7 3700X', '16GB', '2TB HDD', 'AMD Radeon RX 5700', 'BenQ 27-inch', 'Webcam, Headset', '192.168.1.106', '00:14:22:58:9F:61', 'Corporate Network', 'Visual Studio, Spotify', 'Windows Defender', '2025-08-15', '2025-01-10', 'Berlin Office', 'Marcus Kim', 'Sales', 'Replaced Hard Drive in 2022', 'Audio issues occasionally', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(8, 'G78901', 'PC-007', 'Laptop', 'Windows 10', 'Intel i5-1135G7', '8GB', '256GB SSD', 'Intel Iris Xe', 'Acer 15-inch', 'None', '192.168.1.107', '00:14:22:58:9F:62', 'Corporate Network', 'Microsoft Office, Zoom', 'McAfee', '2025-06-01', '2025-01-10', 'Paris Office', 'David Chen', 'Finance', 'No history', 'Battery drains quickly', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(9, 'H89012', 'PC-008', 'Desktop', 'Linux Ubuntu', 'Intel i9-11900K', '64GB', '512GB SSD', 'NVIDIA RTX 3080', 'Dell 32-inch', 'None', '192.168.1.108', '00:14:22:58:9F:63', 'Corporate Network', 'PyCharm, Docker', 'None', '2026-11-20', '2025-01-10', 'Amsterdam Office', 'Lucas Miller', 'IT', 'Replaced GPU in 2024', 'No issues', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(10, 'I90123', 'PC-009', 'Laptop', 'Windows 11', 'Intel i7-12700', '16GB', '1TB SSD', 'Intel Iris Xe', 'Lenovo 14-inch', 'None', '192.168.1.109', '00:14:22:58:9F:64', 'Corporate Network', 'AutoCAD, Teams', 'ESET', '2027-01-10', '2025-01-10', 'Toronto Office', 'Sarah Brown', 'Engineering', 'No history', 'Occasional lag with large AutoCAD files', '2025-01-16 14:08:22', '2025-01-16 14:08:22'),
-(11, 'J01234', 'PC-010', 'Desktop', 'Windows 10', 'Intel i3-8100', '8GB', '1TB HDD', 'Intel UHD 630', 'HP 24-inch', 'Scanner', '192.168.1.110', '00:14:22:58:9F:65', 'Guest Network', 'Microsoft Office, Chrome', 'Sophos', '2025-02-05', '2025-01-10', 'Los Angeles Office', 'Oliver King', 'Support', 'No history', 'Slow boot times', '2025-01-16 14:08:22', '2025-01-16 14:08:22');
+INSERT INTO `computers` (`id`, `asset_id`, `computer_name`, `computer_type`, `operating_system`, `processor_details`, `ram_size`, `storage_details`, `graphics_card`, `monitor_details`, `peripherals`, `ip_address`, `mac_address`, `network_name`, `installed_applications`, `antivirus_details`, `warranty_expiry_date`, `last_checked_date`, `assigned_user`, `department`, `service_history`, `issue_description`, `created_at`, `updated_at`, `Lab`, `status`) VALUES
+(2, 'A12345', 'PC-001', 'Desktop', 'Windows 10', 'Intel i5-10400', '8GB', '512GB SSD', 'Intel UHD 630', 'Dell 24-inch', 'Keyboard, Mouse', '192.168.1.101', '00:14:22:58:9F:56', 'Corporate Network', 'Microsoft Office, Chrome', 'McAfee', '2026-12-15', '2025-01-10', 'John Doe', 'BCA', 'Replaced Hard Drive in 2023', 'No major issues', '2025-01-16 14:08:22', '2025-01-22 08:14:34', 'lab1', NULL),
+(3, 'B23456', 'PC-002', 'Laptop', 'Windows 11', 'AMD Ryzen 5', '16GB', '1TB HDD', 'NVIDIA GTX 1650', 'HP 15-inch', 'Docking Station', '192.168.1.102', '00:14:22:58:9F:57', 'Corporate Network', 'Adobe Suite, Visual Studio', 'Kaspersky', '2025-07-20', '2025-01-10', 'Jane Smith', 'Engineering', 'Replaced Battery in 2024', 'Overheats occasionally', '2025-01-16 14:08:22', '2025-01-20 16:05:37', 'lab1', NULL),
+(4, 'C34567', 'PC-003', 'Desktop', 'Windows 10', 'Intel i7-10700K', '32GB', '1TB SSD', 'NVIDIA RTX 3070', 'LG 27-inch', 'None', '192.168.1.103', '00:14:22:58:9F:58', 'Corporate Network', 'Visual Studio Code, Docker', 'Norton', '2026-05-10', '2025-01-10', 'Alice Johnson', 'Development', 'Replaced RAM in 2023', 'Minor graphics glitches', '2025-01-16 14:08:22', '2025-01-20 16:10:55', 'lab3', NULL),
+(5, 'D45678', 'PC-004', 'Desktop', 'Windows 7', 'Intel i3-9100F', '4GB', '256GB SSD', 'Intel UHD 610', 'Samsung 24-inch', 'Printer', '192.168.1.104', '00:14:22:58:9F:59', 'Guest Network', 'Google Chrome', 'AVG', '2025-03-25', '2025-01-10', 'Tom Harris', 'Marketing', 'No history', 'Runs slow during large file transfers', '2025-01-16 14:08:22', '2025-01-24 16:42:43', 'lab3', NULL),
+(6, 'E56789', 'PC-005', 'Laptop', 'macOS Ventura', 'Apple M1', '16GB', '512GB SSD', 'Apple Integrated', 'Apple 13-inch Retina', 'None', '192.168.1.105', '00:14:22:58:9F:60', 'Corporate Network', 'Xcode, Slack', 'Bitdefender', '2026-10-30', '2025-01-10', 'Emma Lee', 'Design', 'Replaced Keyboard in 2024', 'Occasional keyboard lag', '2025-01-16 14:08:22', '2025-01-24 16:43:11', 'lab4', NULL),
+(7, 'F67890', 'PC-006', 'Desktop', 'Windows 10', 'AMD Ryzen 7 3700X', '16GB', '2TB HDD', 'AMD Radeon RX 5700', 'BenQ 27-inch', 'Webcam, Headset', '192.168.1.106', '00:14:22:58:9F:61', 'Corporate Network', 'Visual Studio, Spotify', 'Windows Defender', '2025-08-15', '2025-01-10', 'Marcus Kim', 'Sales', 'Replaced Hard Drive in 2022', 'Audio issues occasionally', '2025-01-16 14:08:22', '2025-01-24 16:43:50', 'lab5', NULL),
+(8, 'G78901', 'PC-007', 'Laptop', 'Windows 10', 'Intel i5-1135G7', '8GB', '256GB SSD', 'Intel Iris Xe', 'Acer 15-inch', 'None', '192.168.1.107', '00:14:22:58:9F:62', 'Corporate Network', 'Microsoft Office, Zoom', 'McAfee', '2025-06-01', '2025-01-10', 'David Chen', 'Finance', 'No history', 'Battery drains quickly', '2025-01-16 14:08:22', '2025-01-24 16:44:20', 'language lab', NULL),
+(9, 'H89012', 'PC-008', 'Desktop', 'Linux Ubuntu', 'Intel i9-11900K', '64GB', '512GB SSD', 'NVIDIA RTX 3080', 'Dell 32-inch', 'None', '192.168.1.108', '00:14:22:58:9F:63', 'Corporate Network', 'PyCharm, Docker', 'None', '2026-11-20', '2025-01-10', 'Lucas Miller', 'IT', 'Replaced GPU in 2024', 'No issues', '2025-01-16 14:08:22', '2025-01-24 16:45:29', 'business lab', NULL),
+(10, 'I90123', 'PC-009', 'Laptop', 'Windows 11', 'Intel i7-12700', '16GB', '1TB SSD', 'Intel Iris Xe', 'Lenovo 14-inch', 'None', '192.168.1.109', '00:14:22:58:9F:64', 'Corporate Network', 'AutoCAD, Teams', 'ESET', '2027-01-10', '2025-01-10', 'Sarah Brown', 'Engineering', 'No history', 'Occasional lag with large AutoCAD files', '2025-01-16 14:08:22', '2025-01-24 16:43:29', 'lab5', NULL),
+(11, 'J01234', 'PC-010', 'Desktop', 'Windows 10', 'Intel i3-8100', '8GB', '1TB HDD', 'Intel UHD 630', 'HP 24-inch', 'Scanner', '192.168.1.110', '00:14:22:58:9F:65', 'Guest Network', 'Microsoft Office, Chrome', 'Sophos', '2025-02-05', '2025-01-10', 'Oliver King', 'Support', 'No history', 'Slow boot times', '2025-01-16 14:08:22', '2025-01-16 14:08:22', NULL, NULL),
+(12, '101', 'hp ', 'Desktop', 'WINDOWS 10', 'i-9', '16', '512', '5070', 'hp', 'keybord, mouse', '192.255.2546', '192.255.2546', 'LAN', 'MA OFFICE ', 'MS', '2025-01-20', '2026-01-20', 'Student', 'BCA', '', '', '2025-01-20 15:45:37', '2025-01-20 15:45:37', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -387,19 +425,22 @@ CREATE TABLE `users` (
   `subjects` text DEFAULT NULL,
   `photo` varchar(255) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
+  `password` varchar(255) DEFAULT NULL,
+  `verification_token` varchar(255) DEFAULT NULL,
+  `is_verified` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `name`, `roll_no`, `class`, `subjects`, `photo`, `email`, `password`) VALUES
-(1, 'admin', '1', NULL, NULL, NULL, 'admin@gmail.com', '$2y$10$74BpqUpHS.DECEH7hTAziOvErMnZ4MsSQ1MdwFepcQ.e/7aV8JI/.'),
-(3, 'ADITYA', '24728', 'BCA TY', 'CPP,PHP,java,cs', 'uploads/IMG_20241013_145328.jpg', 'ak8806657127@gmail.com', '$2y$10$c3zljaNk0A6z8RWei680DuedrgXTf1ghRsvh59rMdZEafrjThRWkG'),
-(4, 'vijay', '24730', 'BCA TY', 'php,css', 'uploads/WhatsApp Image 2025-01-11 at 22.29.32.jpeg', 'vijay@gmail.com', '$2y$10$CNKGViL1fmP0XHJ9H.2/TO86I53a/2Zssk7fXQzlX213ke0cfcQ/G'),
-(6, 'ajay', '24726', NULL, NULL, NULL, 'admin5@gmail.com', '$2y$10$g.aLAgQZ7QenQDaUC6P9xOr9zLPkWIutwYTvfmVr5BGym5sT1kg8i'),
-(7, 'admin5', '24755', NULL, NULL, NULL, 'admin5@gmail.com', '$2y$10$WkiZzHMDM9fHEWMCP1AYTu2w38MazWwTNyS.tk58Xm/m23IKq9Boa');
+INSERT INTO `users` (`user_id`, `name`, `roll_no`, `class`, `subjects`, `photo`, `email`, `password`, `verification_token`, `is_verified`) VALUES
+(1, 'admin', '1', NULL, NULL, NULL, 'admin@gmail.com', '$2y$10$74BpqUpHS.DECEH7hTAziOvErMnZ4MsSQ1MdwFepcQ.e/7aV8JI/.', NULL, 0),
+(6, 'ajay', '24726', NULL, NULL, NULL, 'admin5@gmail.com', '$2y$10$g.aLAgQZ7QenQDaUC6P9xOr9zLPkWIutwYTvfmVr5BGym5sT1kg8i', NULL, 0),
+(7, 'admin5', '24755', NULL, NULL, NULL, 'admin5@gmail.com', '$2y$10$WkiZzHMDM9fHEWMCP1AYTu2w38MazWwTNyS.tk58Xm/m23IKq9Boa', NULL, 0),
+(10, 'Kamble Vijay Pandurang', '24730', 'BCA TY', 'PHP,C++', 'uploads/WhatsApp Image 2025-01-22 at 13.40.39.jpeg', 'vijayk366602@gmail.com', '$2y$10$q56bhBConrr.C4OO9VT4T.6tp.U3.jOW8jO4D/bgD5utlMhMlywvK', NULL, 0),
+(11, 'Kamble Aditya Balaji', '24728', 'BCA TY', 'cpp', 'uploads/IMG_20241013_145328.jpg', 'ak8806657127@gmail.com', '$2y$10$cxh59SJsXxvaV8JlkLt88.NFANHCVNviU4.W0R5SVT7Am.LpxJI1K', '4c9ccc2c254d99e765ccd137b5469f59', 0),
+(16, 'shivani', '24427', NULL, NULL, NULL, 'shivanihanchate27@gamil.com', '$2y$10$5w.CnEj5Wy44Y1Nr/obfrui6kt9vX20NqVPpey9pPPxsYcg/BYeoi', NULL, 0);
 
 --
 -- Indexes for dumped tables
@@ -415,9 +456,14 @@ ALTER TABLE `admin_computers`
 -- Indexes for table `complaints`
 --
 ALTER TABLE `complaints`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `complaint_history`
+--
+ALTER TABLE `complaint_history`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `computer_id` (`computer_id`);
+  ADD KEY `complaint_id` (`complaint_id`);
 
 --
 -- Indexes for table `computers`
@@ -461,13 +507,19 @@ ALTER TABLE `admin_computers`
 -- AUTO_INCREMENT for table `complaints`
 --
 ALTER TABLE `complaints`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- AUTO_INCREMENT for table `complaint_history`
+--
+ALTER TABLE `complaint_history`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `computers`
 --
 ALTER TABLE `computers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `computer_problems`
@@ -485,18 +537,17 @@ ALTER TABLE `teachers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `complaints`
+-- Constraints for table `complaint_history`
 --
-ALTER TABLE `complaints`
-  ADD CONSTRAINT `complaints_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `complaints_ibfk_2` FOREIGN KEY (`computer_id`) REFERENCES `computers` (`id`);
+ALTER TABLE `complaint_history`
+  ADD CONSTRAINT `complaint_history_ibfk_1` FOREIGN KEY (`complaint_id`) REFERENCES `complaints` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
