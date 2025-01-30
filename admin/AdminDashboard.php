@@ -73,14 +73,14 @@
 <body>
     <h1>Admin Dashboard</h1>
 
-    <!-- Pending Complaints Section -->
+
     <div class="section">
         <h2>Pending Complaints</h2>
         <?php
-        // Database connection
+       
         include('../database/connection.php');
 
-        // Fetch pending complaints
+       
         $pending_sql = "SELECT id, roll_no, asset_id, issue_description, created_at, selected_problems, email 
                         FROM complaints 
                         WHERE status = 'Pending' 
@@ -121,11 +121,11 @@
         ?>
     </div>
 
-    <!-- Active Complaints Section -->
+    
     <div class="section">
         <h2>Active Complaints</h2>
         <?php
-        // Fetch active complaints (status = 'In Progress')
+       
         $active_complaints_sql = "SELECT id, roll_no, asset_id, issue_description, status, created_at, updated_at 
                                   FROM complaints 
                                   WHERE status = 'In Progress' 

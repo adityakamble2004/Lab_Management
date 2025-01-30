@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_SESSION['otp']) && $enteredOtp == $_SESSION['otp']) {
         echo "Login successful! Welcome, " . $_SESSION['email'];
-        unset($_SESSION['otp']); // Clear OTP after successful login
+        unset($_SESSION['otp']);
         header('Location: ../home_page_complaint_site.php');
         
         exit();

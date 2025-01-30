@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main Page Header</title>
     <style>
-        /* General Styles */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
         }
 
-        /* Header Styles */
         .header {
             display: flex;
             justify-content: space-between;
@@ -37,7 +35,6 @@
             font-weight: bold;
         }
 
-        /* Navigation Menu Styles */
         .nav-menu {
             display: flex;
             align-items: center;
@@ -62,7 +59,6 @@
             background-color: #575757;
         }
 
-        /* User Info Styles */
         .user-info {
             position: relative;
         }
@@ -122,27 +118,24 @@
 
         function logoutUser() {
             alert("You have been logged out.");
-            // Redirect to the login page
             window.location.href = 'login.html';
         }
     </script>
 </head>
 <body>
     <header class="header">
-        <!-- Logo Section -->
         <div class="logo">
-            <img src="collage web/componants/assets/logo.png" alt="Logo"> <!-- Replace 'logo.png' with the actual logo file -->
+            <img src="collage web/componants/assets/logo.png" alt="Logo"> 
             <span>Complaint Portal</span>
         </div>
 
-        <!-- Navigation Menu -->
         <ul class="nav-menu">
             <li><a href="home.html">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="services.html">Services</a></li>
             <li><a href="labs.html">Labs</a></li>
             <li class="user-info">
-                <img src="user.png" alt="User Avatar" class="user-avatar" onclick="toggleUserPopup()"> <!-- Replace 'user.png' with the actual path to user avatar -->
+                <img src="user.png" alt="User Avatar" class="user-avatar" onclick="toggleUserPopup()">
                 <div class="user-popup" id="userPopup">
                     <p><strong>Welcome, [User Name]</strong></p>
                     <p>Email: user@example.com</p>

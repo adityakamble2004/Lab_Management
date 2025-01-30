@@ -1,7 +1,6 @@
 <?php
 include('../database/connection.php');
 
-// Fetch lab details from the database
 $query = "SELECT DISTINCT Lab FROM computers";
 $result = $conn->query($query);
 

@@ -64,10 +64,10 @@
 <body>
     
     <?php
-    // Database connection
+    
     include('../database/connection.php');
 
-    // Fetch complaints
+    // data retrive
     $sql = "SELECT id, roll_no, asset_id, issue_description, status, created_at, resolved_at, selected_problems, email FROM complaints ORDER BY created_at DESC";
     $result = $conn->query($sql);
 

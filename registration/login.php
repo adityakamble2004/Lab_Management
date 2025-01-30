@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Query to check user details
     $query = "SELECT * FROM users WHERE roll_no = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $roll_no);

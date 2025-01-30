@@ -2,14 +2,11 @@
 // Start the session
 session_start();
 
-// Include database connection file
 include('../database/connection.php');
 
-// Check if ID is provided in the URL (for editing a specific record)
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Fetch the existing record from the database
     $query = "SELECT * FROM computers WHERE id = ?";
     if ($stmt = $conn->prepare($query)) {
         $stmt->bind_param("i", $id);
@@ -18,7 +15,6 @@ if (isset($_GET['id'])) {
         }
         $result = $stmt->get_result();
 
-        // Check if the record exists
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
         } else {
@@ -28,9 +24,8 @@ if (isset($_GET['id'])) {
         die("Error preparing the query: " . $conn->error);
     }
 
-    // Update the database with the modified data when the form is submitted
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Collect data from the form and handle blank fields (allow them to be empty)
+
         $asset_id = !empty($_POST['asset_id']) ? $_POST['asset_id'] : NULL;
         $computer_name = !empty($_POST['computer_name']) ? $_POST['computer_name'] : NULL;
         $computer_type = !empty($_POST['computer_type']) ? $_POST['computer_type'] : NULL;
@@ -54,11 +49,9 @@ if (isset($_GET['id'])) {
         $service_history = !empty($_POST['service_history']) ? $_POST['service_history'] : NULL;
         $issue_description = !empty($_POST['issue_description']) ? $_POST['issue_description'] : NULL;
 
-        // Prepare the update query
         $update_query = "UPDATE computers SET asset_id = ?, computer_name = ?, computer_type = ?, operating_system = ?, processor_details = ?, ram_size = ?, storage_details = ?, graphics_card = ?, monitor_details = ?, peripherals = ?, ip_address = ?, mac_address = ?, network_name = ?, installed_applications = ?, antivirus_details = ?, warranty_expiry_date = ?, last_checked_date = ?, Lab = ?, assigned_user = ?, department = ?, service_history = ?, issue_description = ? WHERE id = ?";
         
         if ($update_stmt = $conn->prepare($update_query)) {
-            // Bind parameters, ensuring NULL values are handled
             $update_stmt->bind_param(
                 "ssssssssssssssssssssssi", 
                 $asset_id, $computer_name, $computer_type, $operating_system, $processor_details, $ram_size, 
@@ -67,7 +60,6 @@ if (isset($_GET['id'])) {
                 $Lab, $assigned_user, $department, $service_history, $issue_description, $id
             );
 
-            // Execute and handle errors
             if ($update_stmt->execute()) {
                 echo "<p>Computer information updated successfully!</p>";
             } else {
@@ -81,7 +73,6 @@ if (isset($_GET['id'])) {
     die("Error: No ID provided.");
 }
 
-// Close the database connection
 $conn->close();
 ?>
 
@@ -91,17 +82,17 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Computer Information</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS if needed -->
+    <link rel="stylesheet" href="styles.css"> 
 
     <style>
-        /* Basic reset */
+       
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body styling */
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f7fc;
@@ -109,7 +100,7 @@ body {
     padding: 20px;
 }
 
-/* Container for form */
+
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -119,27 +110,27 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading styling */
+
 h1 {
     text-align: center;
     color: #4A90E2;
     margin-bottom: 20px;
 }
 
-/* Form styling */
+
 form {
     display: flex;
     flex-direction: column;
 }
 
-/* Label styling */
+
 label {
     font-weight: bold;
     margin-bottom: 8px;
     color: #555;
 }
 
-/* Input and textarea styling */
+
 input[type="text"],
 input[type="date"],
 textarea,
@@ -153,13 +144,11 @@ select {
     box-sizing: border-box;
 }
 
-/* Styling for textarea for larger input fields */
 textarea {
     height: 100px;
     resize: vertical;
 }
 
-/* Styling for buttons */
 button {
     padding: 12px;
     background-color: #4A90E2;
@@ -173,12 +162,10 @@ button {
     margin-top: 10px;
 }
 
-/* Button hover effect */
 button:hover {
     background-color: #357ABD;
 }
 
-/* Styling for select dropdown */
 select {
     padding: 10px;
     background-color: #fff;
@@ -187,7 +174,6 @@ select {
     font-size: 14px;
 }
 
-/* Responsive design for smaller screens */
 @media screen and (max-width: 768px) {
     .container {
         padding: 15px;

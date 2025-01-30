@@ -1,14 +1,12 @@
 <?php
 include('../database/connection.php');
 
-// Get lab name from query parameter
 if (isset($_GET['Lab'])) {
     $Lab = $_GET['Lab'];
 } else {
     die("Lab name not specified.");
 }
 
-// Fetch computers in the specified lab
 $query = "SELECT * FROM computers WHERE Lab = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $Lab);

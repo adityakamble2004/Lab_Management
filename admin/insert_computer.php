@@ -1,13 +1,10 @@
 <?php
-// Start the session
 session_start();
 
-// Include database connection file
 include('../database/connection.php');
 
-// Check if the form was submitted via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form data
+
     $asset_id = $_POST['asset_id'];
     $computer_name = $_POST['computer_name'];
     $computer_type = $_POST['computer_type'];
@@ -31,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $service_history = $_POST['service_history'] ?? null;
     $issue_description = $_POST['issue_description'] ?? null;
 
-    // Insert query
     $query = "INSERT INTO computers (
         asset_id, computer_name, computer_type, operating_system, 
         processor_details, ram_size, storage_details, graphics_card, 
@@ -41,15 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         assigned_user, department, service_history, issue_description
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    // Prepare the query
     $stmt = $conn->prepare($query);
 
-    // Error handling for query preparation
     if (!$stmt) {
         die("Query preparation failed: " . $conn->error);
     }
 
-    // Bind parameters to the query
     $stmt->bind_param(
         "ssssssssssssssssssssss",
         $asset_id,
@@ -76,14 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $issue_description
     );
 
-    // Execute the query
     if ($stmt->execute()) {
         echo "<script>alert('Computer information added successfully!'); window.location.href='computer_list.php';</script>";
     } else {
         echo "<script>alert('Error adding computer information: " . $stmt->error . "'); window.location.href='add_computer_form.php';</script>";
     }
 
-    // Close the statement and connection
     $stmt->close();
     $conn->close();
 } else {

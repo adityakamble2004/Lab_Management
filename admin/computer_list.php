@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Computer Information</title>
     <style>
-        /* Reset some basic styles */
+        
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body styles */
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f7f6;
@@ -20,15 +20,14 @@ body {
     padding: 20px;
 }
 
-/* Header styles */
 h1 {
     text-align: center;
     font-size: 30px;
     margin-bottom: 20px;
-    color: #4CAF50; /* Green color for heading */
+    color:rgb(168, 189, 206);
 }
 
-/* Table styles */
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -37,7 +36,7 @@ table {
     background-color: white;
 }
 
-/* Table header */
+
 th {
     background-color: #4CAF50;
     color: white;
@@ -49,7 +48,7 @@ th {
     border-top-right-radius: 8px;
 }
 
-/* Table body */
+
 td {
     padding: 12px 15px;
     text-align: left;
@@ -58,30 +57,30 @@ td {
     color: #555;
 }
 
-/* Zebra striping for table rows */
+
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Hover effect for table rows */
+
 tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Border styling */
+
 table, th, td {
     border: 1px solid #ddd;
     border-radius: 8px;
 }
 
-/* Table container for responsiveness */
+
 .container {
     overflow-x: auto;
     margin: 0 auto;
     max-width: 1200px;
 }
 
-/* Style for the empty state message */
+
 p {
     font-size: 16px;
     color: #555;
@@ -89,7 +88,7 @@ p {
     margin-top: 30px;
 }
 
-/* Styling for each table row */
+
 td {
     font-size: 14px;
     padding: 12px 15px;
@@ -97,7 +96,7 @@ td {
     border: 1px solid #ddd;
 }
 
-/* Style for the Edit button */
+
 .edit-button {
     background-color: #4CAF50;
     color: white;
@@ -113,7 +112,7 @@ td {
     background-color: #45a049;
 }
 
-/* Style for the Delete button */
+
 .delete-button {
     background-color: #f44336;
     color: white;
@@ -128,7 +127,7 @@ td {
     background-color: #e53935;
 }
 
-/* Style for the PDF button */
+
 .pdf-button {
     background-color: #4CAF50;
     color: white;
@@ -144,7 +143,7 @@ td {
     background-color: #45a049;
 }
 
-/* Responsive design for small screens */
+
 @media screen and (max-width: 768px) {
     th, td {
         padding: 10px;
@@ -161,26 +160,26 @@ td {
 </head>
 <body>
 <?php
-// Start the session
+
 session_start();
 echo"";
 
-// Include database connection file
+
 include('../database/connection.php');
 
-// Query to fetch all computer records
+
 $query = "SELECT * FROM computers";
 
 $result = $conn->query($query);
 
-// Error handling for query execution
+
 if (!$result) {
     die("<p>Error retrieving computer records: " . $conn->error . "</p>");
 }
 
-// Check if there are any records in the table
+
 if ($result->num_rows > 0) {
-    // Display the records in a table
+    
     echo "<h1>Computer Information List</h1>";
     echo "<table border='1' cellpadding='10'>";
     echo "<tr>
@@ -209,7 +208,7 @@ if ($result->num_rows > 0) {
             <th>Issue Description</th>
           </tr>";
 
-    // Fetch and display each record
+    
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <td>{$row['id']}</td>
@@ -252,14 +251,14 @@ if ($result->num_rows > 0) {
     }
     echo "</table>";
 } else {
-    // No records found
+   
     echo "<p>No computer records found in the database.</p>";
 }
 
-// Close the database connection
+
 $conn->close();
 ?>
-<!-- Button to Generate PDF -->
+
 <form action="generate_pdf.php" method="get">
     <button type="submit" class="pdf-button">Generate PDF Report</button>
 </form>
