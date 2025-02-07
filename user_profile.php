@@ -2,7 +2,6 @@
 session_start();
 include('database/connection.php');
 
-
 // Check if roll_no is set in session
 if (isset($_SESSION['roll_no'])) {
     $roll_no = $_SESSION['roll_no'];
@@ -28,7 +27,6 @@ if (isset($_SESSION['roll_no'])) {
         $class = $user['class'];
         $subjects = $user['subjects'];
         $photo = $user['photo'];
-
     } else {
         echo "No user found with the given roll number.";
     }
@@ -39,12 +37,9 @@ if (isset($_SESSION['roll_no'])) {
     echo "Roll number not set in session.";
 }
 
-
 // Close database connection
 $conn->close();
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -92,6 +87,8 @@ $conn->close();
         }
         .btn-container {
             margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
         }
         .btn {
             padding: 10px 20px;
@@ -100,9 +97,16 @@ $conn->close();
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            text-decoration: none;
         }
         .btn:hover {
             background: #0056b3;
+        }
+        .btn-dashboard {
+            background: #28a745;
+        }
+        .btn-dashboard:hover {
+            background: #218838;
         }
     </style>
 </head>
@@ -133,9 +137,10 @@ $conn->close();
             <label for="profile_image">Profile Image</label>
             <input type="file" id="profile_image" name="profile_image" accept="image/*">
 
-            <!-- Submit Button -->
+            <!-- Buttons -->
             <div class="btn-container">
                 <button type="submit" class="btn">Save Changes</button>
+                <a href="home_page_complaint_site.php" class="btn btn-dashboard">Go to Dashboard</a>
             </div>
         </form>
     </div>

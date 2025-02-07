@@ -75,8 +75,8 @@ function imgload(){
         <!-- Navigation Menu -->
         <ul class="nav-menu">
             <li><a href="#">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
+            <li><a href="labs/complains/track_complaints.php">complains</a></li>
+            <li><a href="bot\chatbot.html">Bot</a></li>
             <li><a href="labs/labs_overview.php">Labs</a></li>
             <li class="user-info">
                 <img src="componants\assets\user.png" alt="User Avatar" class="user-avatar" onclick="toggleUserPopup()"> <!-- Replace 'user.png' with the actual path to user avatar -->
