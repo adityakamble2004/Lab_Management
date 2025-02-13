@@ -4,26 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup</title>
-     <!-- fevicon code -->
-     <link rel="apple-touch-icon" sizes="57x57" href="fevicon/apple-icon-57x57.png">
-     <link rel="apple-touch-icon" sizes="60x60" href="fevicon//apple-icon-60x60.png">
-     <link rel="apple-touch-icon" sizes="72x72" href="fevicon//apple-icon-72x72.png">
-     <link rel="apple-touch-icon" sizes="76x76" href="fevicon//apple-icon-76x76.png">
-     <link rel="apple-touch-icon" sizes="114x114" href="fevicon//apple-icon-114x114.png">
-     <link rel="apple-touch-icon" sizes="120x120" href="fevicon//apple-icon-120x120.png">
-     <link rel="apple-touch-icon" sizes="144x144" href="fevicon//apple-icon-144x144.png">
-     <link rel="apple-touch-icon" sizes="152x152" href="fevicon//apple-icon-152x152.png">
-     <link rel="apple-touch-icon" sizes="180x180" href="fevicon//apple-icon-180x180.png">
-     <link rel="icon" type="image/png" sizes="192x192"  href="fevicon//android-icon-192x192.png">
-     <link rel="icon" type="image/png" sizes="32x32" href="fevicon//favicon-32x32.png">
-     <link rel="icon" type="image/png" sizes="96x96" href="fevicon//favicon-96x96.png">
-     <link rel="icon" type="image/png" sizes="16x16" href="fevicon//favicon-16x16.png">
-     <link rel="manifest" href="fevicon//manifest.json">
-     <meta name="msapplication-TileColor" content="#ffffff">
-     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-     <meta name="theme-color" content="#ffffff">
     <style>
-        /* Modern Glassmorphic Design */
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #909b5f, #78a7f7);
@@ -87,21 +68,79 @@
             background: #ff5891;
             transform: scale(1.05);
         }
-        
 
+        .error-message {
+            color: rgb(255, 66, 66);
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     
     <div class="form-container">
         <h2>Signup For Students</h2>
-        <form method="POST" action="signup.php">
-            <input type="text" name="roll_no" placeholder="Enter your Roll no" required>
-            <input type="text" name="name" placeholder="Enter your name" required>
+        <form method="POST" action="signup.php" onsubmit="return validateForm()">
+            <input type="text" id="roll_no" name="roll_no" placeholder="Enter your Roll no" required>
+            <p class="error-message" id="roll-error">Roll number must be numeric only.</p>
+
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            <p class="error-message" id="name-error">Name must contain only alphabets and spaces.</p>
+
             <input type="email" name="email" placeholder="Enter your email" required>
-            <input type="password" name="password" placeholder="create a new password " required>
+            
+            <input type="password" id="password" name="password" placeholder="Create a new password" required>
+            <p class="error-message" id="password-error">Password must contain at least 8 characters, 1 uppercase, 1 lowercase, 1 digit, and 1 special character.</p>
+
             <button type="submit">Register</button>
         </form>
     </div>
+
+    <script>
+        function validateForm() {
+            var rollNo = document.getElementById("roll_no").value;
+            var name = document.getElementById("name").value;
+            var password = document.getElementById("password").value;
+
+            var rollError = document.getElementById("roll-error");
+            var nameError = document.getElementById("name-error");
+            var passwordError = document.getElementById("password-error");
+
+            var rollRegex = /^[0-9]+$/;  // Only numbers allowed
+            var nameRegex = /^[A-Za-z\s]+$/; // Only alphabets and spaces allowed
+            var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            var isValid = true;
+
+            // Validate Roll Number
+            if (!rollRegex.test(rollNo)) {
+                rollError.style.display = "block";
+                isValid = false;
+            } else {
+                rollError.style.display = "none";
+            }
+
+            // Validate Name
+            if (!nameRegex.test(name)) {
+                nameError.style.display = "block";
+                isValid = false;
+            } else {
+                nameError.style.display = "none";
+            }
+
+            // Validate Password
+            if (!passwordRegex.test(password)) {
+                passwordError.style.display = "block";
+                isValid = false;
+            } else {
+                passwordError.style.display = "none";
+            }
+
+            return isValid;
+        }
+    </script>
+
 </body>
 </html>
