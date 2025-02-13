@@ -1,33 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
         }
+
         .chat-container {
+            width: 90%;
             max-width: 800px;
-            margin: 50px auto;
             background: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         iframe {
             width: 100%;
-            height: 600px;
+            height: 500px;
             border: none;
             border-radius: 10px;
         }
+
+        .button-container {
+            margin-top: 20px;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .button-container a button {
+            background-color: #28a745;
+            color: white;
+            font-size: 20px;
+            padding: 14px 0;
+            border: none;
+            border-radius: 30px; /* Curved corners */
+            cursor: pointer;
+            width: 90%; /* 90% of parent container */
+            display: block;
+            margin: 0 auto;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .button-container a button:hover {
+            background-color: #98f079;
+            transform: scale(1.03);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            iframe {
+                height: 400px;
+            }
+
+            .button-container a button {
+                font-size: 18px;
+                padding: 12px 0;
+            }
+        }
     </style>
 </head>
+
 <body>
 
     <div class="chat-container">
@@ -35,9 +86,19 @@
         <p>Ask your queries and get instant support.</p>
 
         <!-- Embed Chatbot -->
-        <iframe src="https://cdn.botpress.cloud/webchat/v2.2/shareable.html?configUrl=https://files.bpcontent.cloud/2025/02/06/17/20250206173400-KYCBUTTF.json">
+        <iframe
+            src="https://cdn.botpress.cloud/webchat/v2.2/shareable.html?configUrl=https://files.bpcontent.cloud/2025/02/06/17/20250206173400-KYCBUTTF.json">
         </iframe>
-    </div>
 
+        <!-- Home Button (90% width of container) -->
+        
+    </div>
+    
+    <div class="button-container">
+        <a href="..\home_page_complaint_site.php">
+            <button type="button">Go TO Home</button>
+        </a>
+    </div>
 </body>
+
 </html>
