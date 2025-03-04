@@ -128,6 +128,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
     </style>
 </head>
 <body>
+<?php include 'asset/header.php'; ?>
+
     <h2>Technician Dashboard</h2>
 
     <?php if (!empty($error_message)): ?>

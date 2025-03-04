@@ -54,10 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
         }
 
         $stmt->close();
-        
-        // Refresh the page to reflect updates
-        header("Location: dashboard_technician.php");
-        exit();
+       
     }
 }
 ?>
