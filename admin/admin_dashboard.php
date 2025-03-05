@@ -1,6 +1,16 @@
 <?php
+// Dynamic Greeting Message
 session_start();
 include('../database/connection.php');
+
+$hour = date('H');
+if ($hour >= 5 && $hour < 12) {
+    $greeting = "Good Morning";
+} elseif ($hour >= 12 && $hour < 17) {
+    $greeting = "Good Afternoon";
+} else {
+    $greeting = "Good Evening";
+}
 ?>
 
 <!DOCTYPE html>
@@ -14,74 +24,58 @@ include('../database/connection.php');
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background-color: #f4f4f4;
         }
-        header {
-            background-color: #333;
-            color: #fff;
+        .header {
+            background-color: #007bff;
+            color: white;
             padding: 15px;
             text-align: center;
+            font-size: 20px;
         }
-        nav {
-            background-color: #444;
-            padding: 10px;
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #343a40;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
         }
-        nav a {
-            color: #fff;
+        .sidebar a {
+            display: block;
+            color: white;
+            padding: 15px;
             text-decoration: none;
-            margin-right: 15px;
         }
-        nav a:hover {
-            text-decoration: underline;
+        .sidebar a:hover {
+            background: #007bff;
         }
-        .container {
+        .content {
+            margin-left: 260px;
             padding: 20px;
-        }
-        h1 {
-            color: rgb(32, 103, 179);;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome, <?php echo htmlspecialchars($_SESSION['admin_username']); ?>!</h1>
-    </header>
-
-    <nav>
-        <a href="computer_list.php">Manage Computers</a>
-        <a href="teacher_list.php">Manage Teachers</a>
-        <a href="logout.php">Logout</a>
-    </nav>
-
-    <div class="container">
-        <h2>Admin Dashboard</h2>
-        <p>Use the links above to manage the system.</p>
-        <h3>Quick Actions:</h3>
-        <button onclick="location.href='add_computer_form.php'">Add New Computer</button>
-        <button onclick="location.href='add_teacher_form.php'">Add New Teacher</button>
+    <div class="header">
+        <?php echo "$greeting "; echo htmlspecialchars($_SESSION['admin_username']);?>
     </div>
-
-    <div class="allwork">
-        <ul>
-            <li><a href="insert_computer.php">insert computers </a></li>
-            <li><a href="computer_list.php">computer list</a></li>
-            <li><a href="update_complaint.php">Upate complain</a></li>
-            <li><a href=""></a></li>
-            <li><a href=""></a></li>
-            <li><a href=""></a></li>
-            <li><a href=""></a></li>
-        </ul>
+    
+    <div class="sidebar">
+        <a href="admin_dashboard.php">🏠 Dashboard</a>
+        <a href="manage_complaints.php">📌 Complaints</a>
+        <a href="manage_technicians.php">👷 Technicians</a>
+        <a href="manage_computer.php">💻computers</a>
+        <a href="computer_list.php">📊 Reports</a>
+        <a href="manage_users.php">👩‍🎓 Users</a>
+        <a href="logout.php">🚪 Logout</a>
+    </div>
+    
+    <div class="content">
+        <h2>Welcome to the Admin Dashboard</h2>
+        <p>Manage system operations efficiently from this panel.</p>
     </div>
 </body>
 </html>
