@@ -1,5 +1,40 @@
-<?Php
+<?php
 session_start();
+include('database/connection.php');
+
+
+if (!isset($_SESSION['roll_no'])) {
+    die("Roll number not set in session.");
+}
+
+$roll_no = $_SESSION['roll_no'];
+
+// Fetch user details from database
+$sql = "SELECT * FROM users WHERE roll_no = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $roll_no);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+    
+    $_SESSION['user_id'] = $user['user_id'];
+    $_SESSION['user_name'] = $user['name'];
+    $_SESSION['class'] = $user['class'];
+    $_SESSION['subjects'] = $user['subjects'];
+    $_SESSION['photo'] = $user['photo'] ?: 'componants/assets/user.png'; // Default image if not set
+    $_SESSION['email'] = $user['email'];
+    $_SESSION['is_verified'] = $user['is_verified'];
+} else {
+    die("User not found.");
+}
+
+$stmt->close();
+$conn->close();
+?>
+
+<?Php
 // Define the path to the requested image and fallback image
 function imgload(){
 
@@ -79,7 +114,7 @@ function imgload(){
             <li><a href="bot\chatbot.html">Bot</a></li>
             <li><a href="labs/labs_overview.php">Labs</a></li>
             <li class="user-info">
-                <img src="componants\assets\user.png" alt="User Avatar" class="user-avatar" onclick="toggleUserPopup()"> <!-- Replace 'user.png' with the actual path to user avatar -->
+            <img src="<?php echo $_SESSION['photo']; ?>" alt="User Avatar" class="user-avatar" onclick="toggleUserPopup()"> <!-- Replace 'user.png' with the actual path to user avatar -->
                 <div class="user-popup" id="userPopup">
                     <p><strong>Welcome, <?php echo $_SESSION['user_name'] ?></strong></p>
                     <p><?php echo $_SESSION['email']?></p>
@@ -90,6 +125,9 @@ function imgload(){
             </li>
         </ul>
     </header>
+    <div class="mainsection">
+        
+    </div>
     <h1><?php echo $_SESSION['roll_no'] ?></h1>
 </body>
 </html>

@@ -3,10 +3,10 @@ session_start();
 include '../database/connection.php'; // Ensure this contains $conn for DB connection
 
 // Check if the admin is logged in
-if (!isset($_SESSION['admin_id'])) {
-    header("Location: ../login.php");
-    exit();
-}
+// if (!isset($_SESSION['email'])) {
+//     header("Location: ../login.php");
+//     exit();
+// }
 
 // Fetch all complaints
 $query = "SELECT c.id, c.roll_no, c.asset_id, c.issue_description, c.status, c.created_at, c.resolved_at, c.selected_problems, c.email, c.computer_id, 

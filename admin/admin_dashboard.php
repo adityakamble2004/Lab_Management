@@ -60,7 +60,7 @@ if ($hour >= 5 && $hour < 12) {
 </head>
 <body>
     <div class="header">
-        <?php echo "$greeting "; echo htmlspecialchars($_SESSION['admin_username']);?>
+        <?php echo "$greeting ";?>
     </div>
     
     <div class="sidebar">

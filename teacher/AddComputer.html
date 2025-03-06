@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Computer Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input, select, textarea, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Add Computer Information</h2>
+    <form action="insert_computer.php" method="POST">
+        <label for="asset_id">Asset ID/Tag</label>
+        <input type="text" id="asset_id" name="asset_id" required>
+
+        <label for="computer_name">Computer Name</label>
+        <input type="text" id="computer_name" name="computer_name" required>
+
+        <label for="computer_type">Computer Type</label>
+        <select id="computer_type" name="computer_type" required>
+            <option value="">-- Select Type --</option>
+            <option value="Desktop">Desktop</option>
+            <option value="Laptop">Laptop</option>
+            <option value="Server">Server</option>
+        </select>
+
+        <label for="operating_system">Operating System</label>
+        <input type="text" id="operating_system" name="operating_system" required>
+
+        <label for="processor_details">Processor Details</label>
+        <input type="text" id="processor_details" name="processor_details">
+
+        <label for="ram_size">RAM Size</label>
+        <input type="text" id="ram_size" name="ram_size">
+
+        <label for="storage_details">Storage Details</label>
+        <input type="text" id="storage_details" name="storage_details">
+
+        <label for="graphics_card">Graphics Card</label>
+        <input type="text" id="graphics_card" name="graphics_card">
+
+        <label for="monitor_details">Monitor Details</label>
+        <input type="text" id="monitor_details" name="monitor_details">
+
+        <label for="peripherals">Peripherals</label>
+        <textarea id="peripherals" name="peripherals" rows="4"></textarea>
+
+        <label for="ip_address">IP Address</label>
+        <input type="text" id="ip_address" name="ip_address">
+
+        <label for="mac_address">MAC Address</label>
+        <input type="text" id="mac_address" name="mac_address">
+
+        <label for="network_name">Network Name</label>
+        <input type="text" id="network_name" name="network_name">
+
+        <label for="installed_applications">Installed Applications</label>
+        <textarea id="installed_applications" name="installed_applications" rows="4"></textarea>
+
+        <label for="antivirus_details">Antivirus Details</label>
+        <input type="text" id="antivirus_details" name="antivirus_details">
+
+        <label for="warranty_expiry_date">Warranty Expiry Date</label>
+        <input type="date" id="warranty_expiry_date" name="warranty_expiry_date">
+
+        <label for="last_checked_date">Last Maintenance Check Date</label>
+        <input type="date" id="last_checked_date" name="last_checked_date">
+
+        <label for="assigned_user">Assigned User</label>
+        <input type="text" id="assigned_user" name="assigned_user">
+
+        <label for="department">Department</label>
+        <input type="text" id="department" name="department">
+
+        <label for="service_history">Service History</label>
+        <textarea id="service_history" name="service_history" rows="4"></textarea>
+
+        <label for="issue_description">Issue Description</label>
+        <textarea id="issue_description" name="issue_description" rows="4"></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>
