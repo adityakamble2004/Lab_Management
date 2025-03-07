@@ -138,6 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
+    <?php include('header.php'); ?>
     <div class="container">
         <h2>Manage Complaints</h2>
 

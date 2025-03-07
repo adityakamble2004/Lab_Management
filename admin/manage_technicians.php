@@ -94,7 +94,7 @@ $technicians = mysqli_query($conn, "SELECT * FROM technicians");
     </style>
 </head>
 <body>
-
+<?php include('header.php'); ?>
 <h2>Manage Technicians</h2>
 
 <!-- Add Technician Form -->

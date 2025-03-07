@@ -176,6 +176,7 @@ $result = $conn->query($query);
 if (!$result) {
     die("<p>Error retrieving computer records: " . $conn->error . "</p>");
 }
+ include('header.php'); 
 
 
 if ($result->num_rows > 0) {

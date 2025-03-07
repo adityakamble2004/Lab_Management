@@ -3,8 +3,8 @@
 session_start();
 include('../database/connection.php');
 
-// Fetch users data from the database
-$sql = "SELECT * FROM users ORDER BY user_id ASC";
+// Fetch complaints data from database
+$sql = "SELECT * FROM complaints ORDER BY created_at DESC";
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -13,7 +13,7 @@ $result = mysqli_query($conn, $sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Users</title>
+    <title>Manage Complaints</title>
     <style>
         /* General Styling */
         body {
@@ -107,11 +107,19 @@ $result = mysqli_query($conn, $sql);
             opacity: 0.8;
         }
 
-        .profile-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .status-resolved {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-in-progress {
+            color: blue;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -120,51 +128,61 @@ $result = mysqli_query($conn, $sql);
     <!-- Header with Go Back Button -->
     <div class="header">
         <a href="admin_dashboard.php" class="btn-back">⬅ Go Back</a>
-        📌 Manage Users
+        📌 Manage Complaints
         <div></div> <!-- Placeholder for flex alignment -->
     </div>
 
     <!-- Main Container -->
     <div class="container">
-        <h2>All Users</h2>
+        <h2>All Complaints</h2>
         <table>
             <tr>
                 <th>ID</th>
-                <th>Photo</th>
-                <th>Name</th>
                 <th>Roll No</th>
-                <th>Class</th>
-                <th>Subjects</th>
+                <th>Asset ID</th>
+                <th>Issue</th>
+                <th>Selected Problems</th>
+                <th>Status</th>
                 <th>Email</th>
-                <th>Verified</th>
+                <th>Computer ID</th>
+                <th>Technician ID</th>
+                <th>Created At</th>
+                <th>Updated At</th>
                 <th>Actions</th>
             </tr>
             <?php
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $row['user_id'] . "</td>";
-                    echo "<td>";
-                    if (!empty($row['photo'])) {
-                        echo "<img src='" . $row['photo'] . "' class='profile-img'>";
-                    } else {
-                        echo "<img src='default_profile.png' class='profile-img'>";
+                    // Apply status-specific styling
+                    $status_class = '';
+                    if ($row['status'] == 'Pending') {
+                        $status_class = 'status-pending';
+                    } elseif ($row['status'] == 'Resolved') {
+                        $status_class = 'status-resolved';
+                    } elseif ($row['status'] == 'In Progress') {
+                        $status_class = 'status-in-progress';
                     }
-                    echo "</td>";
-                    echo "<td>" . ($row['name'] ? $row['name'] : 'N/A') . "</td>";
-                    echo "<td>" . ($row['roll_no'] ? $row['roll_no'] : 'N/A') . "</td>";
-                    echo "<td>" . ($row['class'] ? $row['class'] : 'N/A') . "</td>";
-                    echo "<td>" . ($row['subjects'] ? $row['subjects'] : 'N/A') . "</td>";
-                    echo "<td>" . ($row['email'] ? $row['email'] : 'N/A') . "</td>";
-                    echo "<td>" . ($row['is_verified'] ? '✅ Yes' : '❌ No') . "</td>";
+
+                    echo "<tr>";
+                    echo "<td>" . $row['id'] . "</td>";
+                    echo "<td>" . $row['roll_no'] . "</td>";
+                    echo "<td>" . $row['asset_id'] . "</td>";
+                    echo "<td>" . $row['issue_description'] . "</td>";
+                    echo "<td>" . $row['selected_problems'] . "</td>";
+                    echo "<td class='$status_class'>" . $row['status'] . "</td>";
+                    echo "<td>" . $row['email'] . "</td>";
+                    echo "<td>" . ($row['computer_id'] ? $row['computer_id'] : 'N/A') . "</td>";
+                    echo "<td>" . ($row['technician_id'] ? $row['technician_id'] : 'Unassigned') . "</td>";
+                    echo "<td>" . $row['created_at'] . "</td>";
+                    echo "<td>" . $row['updated_at'] . "</td>";
                     echo "<td>
-                        <a href='view_user.php?user_id=" . $row['user_id'] . "' class='btn btn-view'>View</a>
-                        <a href='delete_user.php?user_id=" . $row['user_id'] . "' class='btn btn-delete' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>
+                        <a href='view_complaint.php?id=" . $row['id'] . "' class='btn btn-view'>View</a>
+                        <a href='delete_complaint.php?id=" . $row['id'] . "' class='btn btn-delete' onclick='return confirm(\"Are you sure you want to delete this complaint?\")'>Delete</a>
                     </td>";
                     echo "</tr>";
                 }
             } else {
-                echo "<tr><td colspan='9' style='text-align:center;'>No users found</td></tr>";
+                echo "<tr><td colspan='12' style='text-align:center;'>No complaints found</td></tr>";
             }
             ?>
         </table>
