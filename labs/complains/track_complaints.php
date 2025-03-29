@@ -82,7 +82,7 @@ $result = $stmt->get_result();
         <p>No complaints found. <a href="file_complaint.php">Register a complaint</a>.</p>
     <?php endif; ?>
 
-    <a href="../../home_page_complaint_site.php">Back to Dashboard</a>
+    <a href="../../student/home_page_complaint_site.php">Back to Dashboard</a>
 </body>
 </html>
 

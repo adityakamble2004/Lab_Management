@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('database/connection.php');
+include('../database/connection.php');
 
 // Check if roll_no is set in session
 if (isset($_SESSION['roll_no'])) {

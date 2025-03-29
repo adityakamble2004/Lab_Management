@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('database/connection.php');
+include('../database/connection.php');
 
 
 if (!isset($_SESSION['roll_no'])) {
@@ -39,7 +39,7 @@ $conn->close();
 function imgload(){
 
     $imagePath = "";
-    $fallbackImagePath = "componants\assets\user.png";
+    $fallbackImagePath = "../componants\assets\user.png";
     
     // Check if the requested image exists
     if (file_exists($imagePath)) {
@@ -102,7 +102,7 @@ function imgload(){
     <header class="header">
         <!-- Logo Section -->
         <div class="logo">
-            <img src="componants/assets/student_logo.png" alt="student Logo" height="160px">
+            <img src="../componants/assets/student_logo.png" alt="student Logo" height="160px">
             
             <span>Complaint Portal</span>
         </div>
@@ -110,16 +110,16 @@ function imgload(){
         <!-- Navigation Menu -->
         <ul class="nav-menu">
             <li><a href="#">Home</a></li>
-            <li><a href="labs/complains/track_complaints.php">complains</a></li>
-            <li><a href="bot\chatbot.html">Bot</a></li>
-            <li><a href="labs/labs_overview.php">Labs</a></li>
+            <li><a href="../labs/complains/track_complaints.php">complains</a></li>
+            <li><a href="../bot\chatbot.html">Bot</a></li>
+            <li><a href="../labs/labs_overview.php">Labs</a></li>
             <li class="user-info">
             <img src="<?php echo $_SESSION['photo']; ?>" alt="User Avatar" class="user-avatar" onclick="toggleUserPopup()"> <!-- Replace 'user.png' with the actual path to user avatar -->
                 <div class="user-popup" id="userPopup">
                     <p><strong>Welcome, <?php echo $_SESSION['user_name'] ?></strong></p>
                     <p><?php echo $_SESSION['email']?></p>
                     <button onclick="window.location.href='user_profile.php';">View Profile</button>
-                    <button onclick="window.location.href='\index.html'">Logout</button>
+                    <button onclick="window.location.href='\logout.php'">Logout</button>
                     
                 </div>
             </li>
@@ -128,6 +128,5 @@ function imgload(){
     <div class="mainsection">
         
     </div>
-    <h1><?php echo $_SESSION['roll_no'] ?></h1>
 </body>
 </html>

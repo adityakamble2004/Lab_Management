@@ -1,7 +1,7 @@
 <?php
 session_start();
 // Start session
-include('database/connection.php');
+include('../database/connection.php');
 
 
 // Check if the user is logged in

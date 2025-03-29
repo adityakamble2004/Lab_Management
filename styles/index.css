@@ -1,6 +1,8 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
+      background: linear-gradient(to right, rgb(191, 220, 226), rgb(224, 249, 251));
+
     }
 
     .hr-format {
@@ -218,3 +220,66 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* Styling for the About Section */
+.about {
+  text-align: center;
+  padding: 50px 20px;
+  background: #b8e0e2;
+}
+
+.about h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.about p {
+  font-size: 18px;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+}
+
+/* Feature Boxes */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.feature-box {
+  background: rgb(252, 241, 248);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.feature-box:hover {
+  transform: translateY(-5px);
+}
+
+.feature-box h3 {
+  font-size: 20px;
+  color: #322922;
+  margin-bottom: 10px;
+}
+
+.feature-box p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* Footer Styling */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: #222;
+  color: white;
+  font-size: 14px;
+}
