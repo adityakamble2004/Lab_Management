@@ -126,7 +126,10 @@ function imgload(){
         </ul>
     </header>
     <div class="mainsection">
-        
+    <?php
+include('C:/xampp/htdocs/college_web/student/complain.php');
+?>
+
     </div>
 </body>
 </html>

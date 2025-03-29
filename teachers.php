@@ -42,7 +42,7 @@
 <body>
     <div class="container">
         <h2>Select Your Role</h2>
-        <button class="teacher" onclick="location.href='teacher_login.html'">I am Teacher</button>
+        <button class="teacher" onclick="location.href='teacher_login.php'">I am Teacher</button>
         <button class="technician" onclick="location.href='technician/login_technician.php'">I am Technician</button>
     </div>
 </body>
